@@ -6,3 +6,5 @@ checkpoints
 trash
 examples*
 .env
+test
+venv
