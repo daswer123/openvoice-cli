@@ -8,3 +8,4 @@ examples*
 .env
 test
 venv
+dist
