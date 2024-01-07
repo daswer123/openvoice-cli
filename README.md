@@ -20,8 +20,8 @@ https://github.com/daswer123/OpenVoice-cli/assets/22278673/7b4255eb-7797-4370-82
 You can keep track of all changes on the [release page](https://github.com/daswer123/OpenVoice-cli/releases)
 
 ## TODO
-- [ ] Batch generation via console
-- [ ] Possibility to use inference import through code
+- [x] Batch generation via console
+- [x] Possibility to use inference import through code
 
 ## Installation
 
