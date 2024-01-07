@@ -3,10 +3,8 @@ import numpy as np
 import re
 import soundfile
 import openvoice_cli.utils as utils
-import openvoice_cli.commons as commons
 import os
 import librosa
-from openvoice_cli.text import text_to_sequence
 from openvoice_cli.mel_processing import spectrogram_torch
 from openvoice_cli.models import SynthesizerTrn
 
@@ -38,66 +36,6 @@ class OpenVoiceBaseClass(object):
         print("Loaded checkpoint '{}'".format(ckpt_path))
         print('missing/unexpected keys:', a, b)
 
-
-class BaseSpeakerTTS(OpenVoiceBaseClass):
-    language_marks = {
-        "english": "EN",
-        "chinese": "ZH",
-    }
-
-    @staticmethod
-    def get_text(text, hps, is_symbol):
-        text_norm = text_to_sequence(text, hps.symbols, [] if is_symbol else hps.data.text_cleaners)
-        if hps.data.add_blank:
-            text_norm = commons.intersperse(text_norm, 0)
-        text_norm = torch.LongTensor(text_norm)
-        return text_norm
-
-    @staticmethod
-    def audio_numpy_concat(segment_data_list, sr, speed=1.):
-        audio_segments = []
-        for segment_data in segment_data_list:
-            audio_segments += segment_data.reshape(-1).tolist()
-            audio_segments += [0] * int((sr * 0.05)/speed)
-        audio_segments = np.array(audio_segments).astype(np.float32)
-        return audio_segments
-
-    @staticmethod
-    def split_sentences_into_pieces(text, language_str):
-        texts = utils.split_sentence(text, language_str=language_str)
-        print(" > Text splitted to sentences.")
-        print('\n'.join(texts))
-        print(" > ===========================")
-        return texts
-
-    def tts(self, text, output_path, speaker, language='English', speed=1.0):
-        mark = self.language_marks.get(language.lower(), None)
-        assert mark is not None, f"language {language} is not supported"
-
-        texts = self.split_sentences_into_pieces(text, mark)
-
-        audio_list = []
-        for t in texts:
-            t = re.sub(r'([a-z])([A-Z])', r'\1 \2', t)
-            t = f'[{mark}]{t}[{mark}]'
-            stn_tst = self.get_text(t, self.hps, False)
-            device = self.device
-            speaker_id = self.hps.speakers[speaker]
-            with torch.no_grad():
-                x_tst = stn_tst.unsqueeze(0).to(device)
-                x_tst_lengths = torch.LongTensor([stn_tst.size(0)]).to(device)
-                sid = torch.LongTensor([speaker_id]).to(device)
-                audio = self.model.infer(x_tst, x_tst_lengths, sid=sid, noise_scale=0.667, noise_scale_w=0.6,
-                                    length_scale=1.0 / speed)[0][0, 0].data.cpu().float().numpy()
-            audio_list.append(audio)
-        audio = self.audio_numpy_concat(audio_list, sr=self.hps.data.sampling_rate, speed=speed)
-
-        if output_path is None:
-            return audio
-        else:
-            soundfile.write(output_path, audio, self.hps.data.sampling_rate)
-
-
 class ToneColorConverter(OpenVoiceBaseClass):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -107,8 +45,6 @@ class ToneColorConverter(OpenVoiceBaseClass):
             self.watermark_model = wavmark.load_model().to(self.device)
         else:
             self.watermark_model = None
-
-
 
     def extract_se(self, ref_wav_list, se_save_path=None):
         if isinstance(ref_wav_list, str):

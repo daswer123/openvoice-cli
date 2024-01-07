@@ -17,6 +17,7 @@ model_size = "medium"
 # Run on GPU with FP16
 model = None
 def split_audio_whisper(audio_path, audio_name, target_dir='processed'):
+    print("whisper")
     global model
     if model is None:
         model = WhisperModel(model_size, device="cuda", compute_type="float16")
