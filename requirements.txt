@@ -1,9 +1,9 @@
 librosa==0.9.1
 pydub==0.25.1
-wavmark==0.0.2
+wavmark==0.0.3
 faster-whisper>=0.9.0
 whisper-timestamped>=1.14.2
-torch==1.13.1
-torchaudio==0.13.1
+torch>=1.13.1
+torchaudio>=0.13.1
 typing-extensions>=4.6.1
-numpy>1.22.2
+numpy>1.24.2
