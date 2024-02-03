@@ -31,8 +31,6 @@ Simple installation :
 pip install openvoice-cli
 ```
 
-**Attention is used Pytorch version 1.13.1 higher unfortunately can not, waiting for an update from the authors of openvoice**
-
 This will install all the necessary dependencies, including a **CPU support only** version of PyTorch
 
 I recommend that you install the **GPU version** to improve processing speed ( up to 3 times faster )
@@ -44,7 +42,7 @@ Read the end of the README to learn how to install.
 python -m venv venv
 venv\Scripts\activate
 pip install openvoice-cli
-pip install torch==1.13.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorch.org/whl/cu117
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
 ### Linux
@@ -52,7 +50,7 @@ pip install torch==1.13.1+cu117 torchaudio==0.13.1+cu117 --index-url https://dow
 python -m venv venv
 source venv\bin\activate
 pip install openvoice-cli
-pip install torch==1.13.1+cu117 torchaudio==0.13.1+cu117 --index-url https://download.pytorch.org/whl/cu117
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
 ## Usage
