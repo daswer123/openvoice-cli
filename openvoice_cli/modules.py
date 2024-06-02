@@ -13,7 +13,6 @@ from openvoice_cli.attentions import Encoder
 
 LRELU_SLOPE = 0.1
 
-
 class LayerNorm(nn.Module):
     def __init__(self, channels, eps=1e-5):
         super().__init__()

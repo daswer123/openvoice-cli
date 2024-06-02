@@ -45,6 +45,9 @@ class ToneColorConverter(OpenVoiceBaseClass):
             self.watermark_model = wavmark.load_model().to(self.device)
         else:
             self.watermark_model = None
+        self.version = getattr(self.hps, '_version_', "v1")
+
+
 
     def extract_se(self, ref_wav_list, se_save_path=None):
         if isinstance(ref_wav_list, str):
@@ -134,4 +137,3 @@ class ToneColorConverter(OpenVoiceBaseClass):
         bits = np.stack(bits).reshape(-1, 8)
         message = utils.bits_to_string(bits)
         return message
-    

@@ -26,8 +26,8 @@ def download_checkpoint(dest_dir):
 
     # Define files and their corresponding URLs
     files_to_download = {
-         "checkpoint.pth": f"https://huggingface.co/myshell-ai/OpenVoice/resolve/main/checkpoints/converter/checkpoint.pth?download=true",
-         "config.json": f"https://huggingface.co/myshell-ai/OpenVoice/raw/main/checkpoints/converter/config.json",
+         "checkpoint.pth": f"https://huggingface.co/daswer123/openvoice-tunner-v2/resolve/main/checkpoint.pth?download=true",
+         "config.json": f"https://huggingface.co/daswer123/openvoice-tunner-v2/raw/main/config.json",
     }
 
     # Check and create directories
